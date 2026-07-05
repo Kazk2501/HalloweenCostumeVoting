@@ -129,7 +129,7 @@ body::before {
 }
 
 .card p {
-  color: #ffd2b5;
+  color: #ff9f4d;
   line-height: 1.75;
 }
 
@@ -278,7 +278,7 @@ h1 {
 }
 
 p {
-  color: #ffd1b0;
+  color: #ff9f4d;
   line-height: 1.7;
 }
 
@@ -382,7 +382,7 @@ p {
 
 .bar-label {
   width: 180px;
-  color: #ffb682;
+  color: #ff9f4d;
   font-size: 0.95rem;
 }
 
@@ -423,7 +423,7 @@ p {
   border-radius: 10px;
   border: 1px solid rgba(140, 255, 251, 0.16);
   background: rgba(4, 6, 12, 0.8);
-  color: var(--text);
+  color: #ff9f4d;
 }
 
 .custom-card {

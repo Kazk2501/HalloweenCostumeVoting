@@ -102,7 +102,17 @@
 
 			// sort for winner detection
 			const sorted = entries.slice().sort((a,b)=>b.votes-a.votes);
-			const winnerText = (total===0)?'No votes yet.' : (sorted[0].votes===0? 'No votes yet.' : `Leading: ${sorted[0].name} (${sorted[0].votes} vote${sorted[0].votes!==1?'s':''})`);
+			const topVotes = sorted[0]?.votes || 0;
+			const tiedEntries = sorted.filter(entry => entry.votes === topVotes && topVotes > 0);
+			let winnerText = 'No votes yet.';
+			if (topVotes > 0) {
+				if (tiedEntries.length === 1) {
+					winnerText = `Leading: ${tiedEntries[0].name} (${tiedEntries[0].votes} vote${tiedEntries[0].votes!==1?'s':''})`;
+				} else {
+					const namesList = tiedEntries.map(entry => entry.name).join(', ');
+					winnerText = `Tie: ${namesList} (${topVotes} vote${topVotes!==1?'s':''} each)`;
+				}
+			}
 			document.getElementById('winner').textContent = winnerText;
 
 			entries.forEach(entry=>{

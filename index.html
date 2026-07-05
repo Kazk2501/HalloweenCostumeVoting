@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h1>Halloween Costume Voting</h1>
-	<p style="text-align:center">Click "Vote" under a costume to add a vote. Replace images using the file pickers.</p>
+	<p style="text-align:center">Click "Vote" under a costume to add a vote. Edit the image paths below to point to files in your images folder.</p>
 
 	<div class="options" id="options">
 		<!-- 6 predefined slots -->
@@ -17,7 +17,7 @@
 	<div class="card custom-card">
 		<h3>Choose Your Own</h3>
 		<img id="customPreview" src="" alt="Custom option" />
-		<input id="customFile" type="file" accept="image/*">
+		<input id="customImagePath" class="custom-input" placeholder="images/your-image.jpg" value="">
 		<input id="customName" class="custom-input" placeholder="Name your costume (e.g. "Pirate")">
 		<button class="vote-btn" id="voteCustom">Vote</button>
 	</div>
@@ -32,36 +32,41 @@
 		const names = [
 			'G1 Shockwave', 'Batman Ninja', 'Death from Puss and Boots', 'WH40k Adpetus Custodes', 'Elden Ring Crucible Knight', 'Springtrap', 'Alphonse Elric', 'Perfect Cell'
 		];
+		const imagePaths = [
+			'images/g1-shockwave.jpg',
+			'images/batman-ninja.jpg',
+			'images/puss-and-boots.jpg',
+			'images/custodes.jpg',
+			'images/crucible-knight.jpg',
+			'images/springtrap.jpg',
+			'images/alphonse-elric.jpg',
+			'images/perfect-cell.jpg'
+		];
 		const votes = [0,0,0,0,0,0,0,0];
 
 		const optionsEl = document.getElementById('options');
 		function createCard(i){
 			const card = document.createElement('div'); card.className='card';
 			const title = document.createElement('h3'); title.textContent = names[i];
-			const img = document.createElement('img'); img.id = 'img'+i; img.alt = names[i]+' image';
-			const file = document.createElement('input'); file.type='file'; file.accept='image/*';
-			file.addEventListener('change', e=>{
-				const f = e.target.files && e.target.files[0];
-				if(!f) return;
-				img.src = URL.createObjectURL(f);
-			});
+			const img = document.createElement('img'); img.id = 'img'+i; img.alt = names[i]+' image'; img.src = imagePaths[i] || '';
+			const pathInput = document.createElement('input'); pathInput.type='text'; pathInput.className='custom-input'; pathInput.value = imagePaths[i] || ''; pathInput.placeholder='images/your-image.jpg';
+			pathInput.addEventListener('input', ()=>{ img.src = pathInput.value.trim(); });
 			const btn = document.createElement('button'); btn.className='vote-btn'; btn.textContent='Vote';
 			btn.addEventListener('click', ()=>{ votes[i]++; updateChart(); });
-			card.appendChild(title); card.appendChild(img); card.appendChild(file); card.appendChild(btn);
+			card.appendChild(title); card.appendChild(img); card.appendChild(pathInput); card.appendChild(btn);
 			return card;
 		}
 
 		for(let i=0;i<8;i++) optionsEl.appendChild(createCard(i));
 
 		// custom option
-		const customFile = document.getElementById('customFile');
 		const customPreview = document.getElementById('customPreview');
+		const customImagePath = document.getElementById('customImagePath');
 		const customName = document.getElementById('customName');
 		const voteCustom = document.getElementById('voteCustom');
 		let customVotes = 0;
-		customFile.addEventListener('change', e=>{
-			const f = e.target.files && e.target.files[0]; if(!f) return;
-			customPreview.src = URL.createObjectURL(f);
+		customImagePath.addEventListener('input', ()=>{
+			customPreview.src = customImagePath.value.trim();
 		});
 		voteCustom.addEventListener('click', ()=>{ customVotes++; updateChart(); });
 

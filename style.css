@@ -133,7 +133,7 @@ body::after {
   height: 120px;
   top: -24px;
   right: -24px;
-  background: radial-gradient(circle, rgba(140, 255, 251, 0.28), transparent 55%);
+  background: radial-gradient(circle, rgba(255, 122, 61, 0.18), transparent 55%);
 }
 
 .card::after {
@@ -141,7 +141,7 @@ body::after {
   height: 180px;
   bottom: -40px;
   left: -40px;
-  background: radial-gradient(circle, rgba(118, 224, 107, 0.18), transparent 60%);
+  background: radial-gradient(circle, rgba(140, 255, 251, 0.16), transparent 60%);
 }
 
 .card h2 {

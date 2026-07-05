@@ -1,13 +1,16 @@
 /* Spooky digital fabrication theme: mad scientist lab meets eerie circuitry */
 :root {
   color-scheme: dark;
-  --bg: #070812;
+  --bg: #05060d;
   --panel: #11151f;
   --accent: #8cfffb;
   --accent-2: #76e06b;
-  --glow: rgba(140, 255, 251, 0.25);
-  --text: #e8f1ff;
-  --muted: #8ba2c7;
+  --accent-3: #ff8a3d;
+  --accent-4: #b388ff;
+  --glow: rgba(140, 255, 251, 0.3);
+  --glow-strong: rgba(255, 138, 61, 0.24);
+  --text: #f5f7ff;
+  --muted: #8da0c7;
   --danger: #ff5c8a;
 }
 
@@ -238,6 +241,191 @@ body::before {
   padding: 2rem 1.5rem;
   text-align: center;
   color: var(--muted);
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(140, 255, 251, 0.12), transparent 24%),
+    radial-gradient(circle at 80% 10%, rgba(179, 136, 255, 0.16), transparent 20%),
+    linear-gradient(135deg, #06070d 0%, #0b1020 45%, #05060b 100%);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 2rem 1rem 3rem;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 12% 16%, rgba(255, 255, 255, 0.07) 0%, transparent 10%),
+    linear-gradient(90deg, transparent 0 48%, rgba(140, 255, 251, 0.05) 48% 52%, transparent 52% 100%);
+  background-size: auto, 26px 26px;
+  opacity: 0.75;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+h1 {
+  text-align: center;
+  margin: 0 0 0.75rem;
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(140, 255, 251, 0.25);
+}
+
+p {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem auto 2rem;
+  max-width: 1200px;
+}
+
+.card {
+  border: 1px solid rgba(140, 255, 251, 0.18);
+  padding: 1rem;
+  border-radius: 20px;
+  text-align: center;
+  background: linear-gradient(145deg, rgba(14, 18, 29, 0.95), rgba(8, 10, 18, 0.92));
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: -20% 60% auto auto;
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(140, 255, 251, 0.18), transparent 70%);
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+.card img,
+#customPreview {
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  max-height: 1000px;
+  object-fit: contain;
+  display: block;
+  margin: 0.5rem auto 0.75rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border: 1px solid rgba(140, 255, 251, 0.15);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  filter: saturate(1.12) contrast(1.06) brightness(1.02);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover img,
+#customPreview:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 16px 40px rgba(140, 255, 251, 0.14);
+}
+
+.card input[type="file"],
+.custom-input,
+.vote-btn {
+  font: inherit;
+}
+
+.card input[type="file"] {
+  margin-top: 0.5rem;
+  color: var(--muted);
+}
+
+.vote-btn {
+  margin-top: 0.7rem;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, var(--accent-3), #ff5c8a);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(255, 92, 138, 0.22);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vote-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(255, 92, 138, 0.3);
+}
+
+.vote-btn:active {
+  transform: translateY(1px);
+}
+
+.chart {
+  margin-top: 2rem;
+  border-top: 1px solid rgba(140, 255, 251, 0.16);
+  padding-top: 1rem;
+}
+
+.bar-wrap {
+  display: flex;
+  align-items: center;
+  margin: 0.7rem 0;
+  gap: 0.75rem;
+}
+
+.bar-label {
+  width: 180px;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.bar {
+  flex: 1;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(140, 255, 251, 0.12);
+}
+
+.bar > .fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-4));
+  width: 0;
+  box-shadow: 0 0 18px rgba(140, 255, 251, 0.2);
+}
+
+.percent {
+  width: 56px;
+  text-align: right;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.winner {
+  margin-top: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow: 0 0 12px rgba(140, 255, 251, 0.2);
+}
+
+.custom-input {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  margin-top: 0.7rem;
+  border-radius: 10px;
+  border: 1px solid rgba(140, 255, 251, 0.16);
+  background: rgba(4, 6, 12, 0.8);
+  color: var(--text);
+}
+
+.custom-card {
+  margin-top: 1rem;
 }
 
 @media (max-width: 600px) {

@@ -5,24 +5,6 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<title>Halloween Costume Voting</title>
 	<link rel="stylesheet" href="style.css">
-	<style>
-		body{font-family: Arial, Helvetica, sans-serif; max-width:900px;margin:20px auto;padding:0 16px}
-		h1{text-align:center}
-		.options{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
-		.card{border:1px solid #ccc;padding:10px;border-radius:6px;text-align:center;background:#fff}
-		.card img{width:100%;max-width:1000px;height:auto;max-height:1000px;object-fit:contain;display:block;margin:0 auto;background:#f4f4f4}
-		.card input[type=file]{margin-top:8px}
-		.vote-btn{margin-top:8px;padding:8px 12px;background:#ff6b00;color:#fff;border:none;border-radius:4px;cursor:pointer}
-		.vote-btn:active{transform:translateY(1px)}
-		.chart{margin-top:28px;border-top:1px solid #ddd;padding-top:16px}
-		.bar-wrap{display:flex;align-items:center;margin:8px 0}
-		.bar-label{width:160px}
-		.bar{flex:1;height:22px;background:#eee;border-radius:4px;overflow:hidden;margin-right:8px}
-		.bar > .fill{height:100%;background:#ff6b00;width:0}
-		.percent{width:48px;text-align:right}
-		.winner{margin-top:12px;font-weight:700}
-		.custom-input{width:100%;padding:6px;margin-top:6px}
-	</style>
 </head>
 <body>
 	<h1>Halloween Costume Voting</h1>
@@ -32,7 +14,7 @@
 		<!-- 6 predefined slots -->
 	</div>
 
-	<div class="card" style="margin-top:12px">
+	<div class="card custom-card">
 		<h3>Choose Your Own</h3>
 		<img id="customPreview" src="" alt="Custom option" />
 		<input id="customFile" type="file" accept="image/*">

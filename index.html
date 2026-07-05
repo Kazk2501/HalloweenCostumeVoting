@@ -16,9 +16,27 @@
 
 	<div class="card custom-card">
 		<h3>Choose Your Own</h3>
-		<img id="customPreview" src="" alt="Custom option" />
 		<input id="customName" class="custom-input" placeholder="Name your costume (e.g. "Pirate")">
 		<button class="vote-btn" id="voteCustom">Vote</button>
+	</div>
+
+	<div class="section gallery-section">
+		<h2>Past Costumes</h2>
+		<p class="gallery-intro">Show off your earlier looks here with a little space for each year.</p>
+		<div class="gallery-grid">
+			<div class="gallery-item">
+				<div class="gallery-image placeholder">2024</div>
+				<input class="gallery-input" placeholder="2024 costume name">
+			</div>
+			<div class="gallery-item">
+				<div class="gallery-image placeholder">2023</div>
+				<input class="gallery-input" placeholder="2023 costume name">
+			</div>
+			<div class="gallery-item">
+				<div class="gallery-image placeholder">2022</div>
+				<input class="gallery-input" placeholder="2022 costume name">
+			</div>
+		</div>
 	</div>
 
 	<div class="chart" id="chart">
@@ -68,7 +86,6 @@
 		for(let i=0;i<8;i++) optionsEl.appendChild(createCard(i));
 
 		// custom option
-		const customPreview = document.getElementById('customPreview');
 		const customName = document.getElementById('customName');
 		const voteCustom = document.getElementById('voteCustom');
 		voteCustom.addEventListener('click', ()=>{

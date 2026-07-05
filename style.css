@@ -155,8 +155,7 @@ body::after {
   line-height: 1.75;
 }
 
-.card img,
-#customPreview {
+.card img {
   width: 100%;
   max-width: 1000px;
   height: auto;
@@ -349,12 +348,6 @@ p {
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
   filter: saturate(1.12) contrast(1.06) brightness(1.02);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.card:hover img,
-#customPreview:hover {
-  transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 16px 40px rgba(140, 255, 251, 0.14);
 }
 
 .card input[type="file"],

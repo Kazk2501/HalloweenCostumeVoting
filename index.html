@@ -8,7 +8,10 @@
 </head>
 <body>
 	<h1>Halloween Costume Voting</h1>
-	<p style="text-align:center">Click "Vote" under a costume to add a vote. Please only vote once, and only remove your own vote! Also, if please don't suggest profanities or inappropriate content for the custom costume option guys.</p>
+	<p style="text-align:center">Click "Vote" under a costume to add a vote. 
+        Please only vote once, and only remove your own vote! 
+        Also, if please don't suggest profanities or inappropriate content for the custom costume option guys.
+        We're working on the honor code here.</p>
 
 	<div class="options" id="options">
 		<!-- 6 predefined slots -->
@@ -20,29 +23,25 @@
 		<button class="vote-btn" id="voteCustom">Vote</button>
 	</div>
 
+	<div class="chart" id="chart">
+		<h2>Current Results</h2>
+		<div id="bars"></div>
+		<div class="winner" id="winner">No votes yet.</div>
+	</div>
+
 	<div class="section gallery-section">
 		<h2>Past Costumes</h2>
 		<p class="gallery-intro">Show off your earlier looks here with a little space for each year.</p>
 		<div class="gallery-grid">
 			<div class="gallery-item">
 				<div class="gallery-image placeholder">2024</div>
-				<input class="gallery-input" placeholder="2024 costume name">
+				<input class="gallery-input" value="Plague Doctor" placeholder="2024 costume name">
 			</div>
 			<div class="gallery-item">
-				<div class="gallery-image placeholder">2023</div>
-				<input class="gallery-input" placeholder="2023 costume name">
-			</div>
-			<div class="gallery-item">
-				<div class="gallery-image placeholder">2022</div>
-				<input class="gallery-input" placeholder="2022 costume name">
+				<div class="gallery-image placeholder">2025</div>
+				<input class="gallery-input" value="Death Knight" placeholder="2025 costume name">
 			</div>
 		</div>
-	</div>
-
-	<div class="chart" id="chart">
-		<h2>Current Results</h2>
-		<div id="bars"></div>
-		<div class="winner" id="winner">No votes yet.</div>
 	</div>
 
 	<script>

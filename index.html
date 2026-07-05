@@ -47,9 +47,9 @@
 
 	<script>
 		const names = [
-			'G1 Shockwave', 'Batman Ninja', 'Death from Puss and Boots', 'WH40k Adeptus Custodes', 'Elden Ring Crucible Knight', 'Springtrap', 'Alphones Elric', 'Perfect Cell'
+			'G1 Shockwave', 'Batman Ninja', 'Death from Puss and Boots', 'WH40k Adpetus Custodes', 'Elden Ring Crucible Knight', 'Springtrap', 'Alphonse Elric', 'Perfect Cell'
 		];
-		const votes = [0,0,0,0,0,0];
+		const votes = [0,0,0,0,0,0,0,0];
 
 		const optionsEl = document.getElementById('options');
 		function createCard(i){
@@ -68,7 +68,7 @@
 			return card;
 		}
 
-		for(let i=0;i<6;i++) optionsEl.appendChild(createCard(i));
+		for(let i=0;i<8;i++) optionsEl.appendChild(createCard(i));
 
 		// custom option
 		const customFile = document.getElementById('customFile');

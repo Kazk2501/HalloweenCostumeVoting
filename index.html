@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h1>Halloween Costume Voting</h1>
-	<p style="text-align:center">Click "Vote" under a costume to add a vote. Edit the image paths below to point to files in your images folder.</p>
+	<p style="text-align:center">Click "Vote" under a costume to add a vote. The images are loaded from the script so you can swap them easily.</p>
 
 	<div class="options" id="options">
 		<!-- 6 predefined slots -->
@@ -17,7 +17,6 @@
 	<div class="card custom-card">
 		<h3>Choose Your Own</h3>
 		<img id="customPreview" src="" alt="Custom option" />
-		<input id="customImagePath" class="custom-input" placeholder="images/your-image.jpg" value="">
 		<input id="customName" class="custom-input" placeholder="Name your costume (e.g. "Pirate")">
 		<button class="vote-btn" id="voteCustom">Vote</button>
 	</div>
@@ -43,17 +42,16 @@
 			'images/perfect-cell.jpg'
 		];
 		const votes = [0,0,0,0,0,0,0,0];
+		const customVoteCounts = {};
 
 		const optionsEl = document.getElementById('options');
 		function createCard(i){
 			const card = document.createElement('div'); card.className='card';
 			const title = document.createElement('h3'); title.textContent = names[i];
 			const img = document.createElement('img'); img.id = 'img'+i; img.alt = names[i]+' image'; img.src = imagePaths[i] || '';
-			const pathInput = document.createElement('input'); pathInput.type='text'; pathInput.className='custom-input'; pathInput.value = imagePaths[i] || ''; pathInput.placeholder='images/your-image.jpg';
-			pathInput.addEventListener('input', ()=>{ img.src = pathInput.value.trim(); });
 			const btn = document.createElement('button'); btn.className='vote-btn'; btn.textContent='Vote';
 			btn.addEventListener('click', ()=>{ votes[i]++; updateChart(); });
-			card.appendChild(title); card.appendChild(img); card.appendChild(pathInput); card.appendChild(btn);
+			card.appendChild(title); card.appendChild(img); card.appendChild(btn);
 			return card;
 		}
 
@@ -61,22 +59,19 @@
 
 		// custom option
 		const customPreview = document.getElementById('customPreview');
-		const customImagePath = document.getElementById('customImagePath');
 		const customName = document.getElementById('customName');
 		const voteCustom = document.getElementById('voteCustom');
-		let customVotes = 0;
-		customImagePath.addEventListener('input', ()=>{
-			customPreview.src = customImagePath.value.trim();
+		voteCustom.addEventListener('click', ()=>{
+			const label = customName.value.trim() || 'Custom';
+			customVoteCounts[label] = (customVoteCounts[label] || 0) + 1;
+			updateChart();
 		});
-		voteCustom.addEventListener('click', ()=>{ customVotes++; updateChart(); });
 
 		function updateChart(){
 			const bars = document.getElementById('bars'); bars.innerHTML='';
-			const total = votes.reduce((a,b)=>a+b,0) + customVotes;
-			// build an array of entries including custom
+			const total = votes.reduce((a,b)=>a+b,0) + Object.values(customVoteCounts).reduce((a,b)=>a+b,0);
 			const entries = names.map((n,i)=>({name:n,votes:votes[i]}));
-			const customNameText = customName.value.trim()||'Custom';
-			entries.push({name:customNameText,votes:customVotes});
+			entries.push(...Object.entries(customVoteCounts).map(([name,voteCount])=>({name,votes:voteCount})));
 
 			// sort for winner detection
 			const sorted = entries.slice().sort((a,b)=>b.votes-a.votes);

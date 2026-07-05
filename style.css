@@ -129,6 +129,19 @@ body::before {
   line-height: 1.75;
 }
 
+.card img,
+#customPreview {
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  max-height: 1000px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
 .button,
 .btn {
   display: inline-flex;

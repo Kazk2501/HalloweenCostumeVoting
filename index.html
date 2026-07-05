@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Halloween Costume Voting</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<h1>Halloween Costume Voting</h1>
+	<p style="text-align:center">Click "Vote" under a costume to add a vote. Please only vote once, and only remove your own vote! Also, if please don't suggest profanities or inappropriate content for the custom costume option guys.</p>
+
+	<div class="options" id="options">
+		<!-- 6 predefined slots -->
+	</div>
+
+	<div class="card custom-card">
+		<h3>Choose Your Own</h3>
+		<img id="customPreview" src="" alt="Custom option" />
+		<input id="customName" class="custom-input" placeholder="Name your costume (e.g. "Pirate")">
+		<button class="vote-btn" id="voteCustom">Vote</button>
+	</div>
+
+	<div class="chart" id="chart">
+		<h2>Current Results</h2>
+		<div id="bars"></div>
+		<div class="winner" id="winner">No votes yet.</div>
+	</div>
+
+	<script>
+		const names = [
+			'G1 Shockwave', 'Batman Ninja', 'Death from Puss and Boots', 'WH40k Adpetus Custodes', 'Elden Ring Crucible Knight', 'Springtrap', 'Alphonse Elric', 'Perfect Cell'
+		];
+		const imagePaths = [
+			'images/shockwave.jpg.webp',
+			'images/batman-ninja.jpg',
+			'images/puss-and-boots.jpg',
+			'images/custodes.jpg',
+			'images/crucible-knight.jpg',
+			'images/springtrap.jpg',
+			'images/alphonse-elric.jpg',
+			'images/perfect-cell.jpg'
+		];
+		const storageKey = 'halloween-costume-votes';
+		const storedState = JSON.parse(localStorage.getItem(storageKey) || '{"votes":[0,0,0,0,0,0,0,0],"customVoteCounts":{}}');
+		const votes = storedState.votes || [0,0,0,0,0,0,0,0];
+		const customVoteCounts = storedState.customVoteCounts || {};
+
+		function saveState(){
+			localStorage.setItem(storageKey, JSON.stringify({ votes, customVoteCounts }));
+		}
+
+		const optionsEl = document.getElementById('options');
+		function createCard(i){
+			const card = document.createElement('div'); card.className='card';
+			const title = document.createElement('h3'); title.textContent = names[i];
+			const img = document.createElement('img'); img.id = 'img'+i; img.alt = names[i]+' image'; img.src = imagePaths[i] || '';
+			const btnWrap = document.createElement('div'); btnWrap.style.display='flex'; btnWrap.style.gap='8px'; btnWrap.style.justifyContent='center'; btnWrap.style.marginTop='8px';
+			const voteBtn = document.createElement('button'); voteBtn.className='vote-btn'; voteBtn.textContent='Vote';
+			voteBtn.addEventListener('click', ()=>{ votes[i]++; saveState(); updateChart(); });
+			const removeBtn = document.createElement('button'); removeBtn.className='vote-btn'; removeBtn.textContent='Remove'; removeBtn.style.background='linear-gradient(135deg, #666, #444)';
+			removeBtn.addEventListener('click', ()=>{ if(votes[i] > 0){ votes[i]--; saveState(); updateChart(); } });
+			btnWrap.appendChild(voteBtn); btnWrap.appendChild(removeBtn);
+			card.appendChild(title); card.appendChild(img); card.appendChild(btnWrap);
+			return card;
+		}
+
+		for(let i=0;i<8;i++) optionsEl.appendChild(createCard(i));
+
+		// custom option
+		const customPreview = document.getElementById('customPreview');
+		const customName = document.getElementById('customName');
+		const voteCustom = document.getElementById('voteCustom');
+		voteCustom.addEventListener('click', ()=>{
+			const label = customName.value.trim() || 'Custom';
+			customVoteCounts[label] = (customVoteCounts[label] || 0) + 1;
+			saveState();
+			updateChart();
+		});
+
+		function updateChart(){
+			const bars = document.getElementById('bars'); bars.innerHTML='';
+			const total = votes.reduce((a,b)=>a+b,0) + Object.values(customVoteCounts).reduce((a,b)=>a+b,0);
+			const entries = names.map((n,i)=>({name:n,votes:votes[i]}));
+			entries.push(...Object.entries(customVoteCounts).map(([name,voteCount])=>({name,votes:voteCount})));
+
+			// sort for winner detection
+			const sorted = entries.slice().sort((a,b)=>b.votes-a.votes);
+			const winnerText = (total===0)?'No votes yet.' : (sorted[0].votes===0? 'No votes yet.' : `Leading: ${sorted[0].name} (${sorted[0].votes} vote${sorted[0].votes!==1?'s':''})`);
+			document.getElementById('winner').textContent = winnerText;
+
+			entries.forEach(entry=>{
+				const wrap = document.createElement('div'); wrap.className='bar-wrap';
+				const label = document.createElement('div'); label.className='bar-label'; label.textContent = entry.name;
+				const bar = document.createElement('div'); bar.className='bar';
+				const fill = document.createElement('div'); fill.className='fill';
+				const pct = total===0?0:Math.round((entry.votes/total)*100);
+				fill.style.width = pct+'%';
+				bar.appendChild(fill);
+				const percent = document.createElement('div'); percent.className='percent'; percent.textContent = entry.votes + ' ('+pct+'%)';
+				const controls = document.createElement('div'); controls.style.display='flex'; controls.style.gap='6px';
+				const addBtn = document.createElement('button'); addBtn.className='vote-btn'; addBtn.textContent='+'; addBtn.style.padding='4px 8px';
+				addBtn.addEventListener('click', ()=>{
+					if(names.includes(entry.name)){
+						votes[names.indexOf(entry.name)]++;
+					} else {
+						customVoteCounts[entry.name] = (customVoteCounts[entry.name] || 0) + 1;
+					}
+					saveState(); updateChart();
+				});
+				const removeBtn = document.createElement('button'); removeBtn.className='vote-btn'; removeBtn.textContent='-'; removeBtn.style.padding='4px 8px'; removeBtn.style.background='linear-gradient(135deg, #666, #444)';
+				removeBtn.addEventListener('click', ()=>{
+					if(names.includes(entry.name)){
+						if(votes[names.indexOf(entry.name)] > 0){ votes[names.indexOf(entry.name)]--; }
+					} else if((customVoteCounts[entry.name] || 0) > 0){
+						customVoteCounts[entry.name]--;
+						if(customVoteCounts[entry.name] <= 0) delete customVoteCounts[entry.name];
+					}
+					saveState(); updateChart();
+				});
+				controls.appendChild(addBtn); controls.appendChild(removeBtn);
+				wrap.appendChild(label); wrap.appendChild(bar); wrap.appendChild(percent); wrap.appendChild(controls);
+				bars.appendChild(wrap);
+			});
+		}
+
+		// initial chart
+		updateChart();
+	</script>
+</body>
+</html>

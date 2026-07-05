@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Halloween Costume Voting</title>
+	<style>
+		body{font-family: Arial, Helvetica, sans-serif; max-width:900px;margin:20px auto;padding:0 16px}
+		h1{text-align:center}
+		.options{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+		.card{border:1px solid #ccc;padding:10px;border-radius:6px;text-align:center;background:#fff}
+		.card img{width:100%;height:150px;object-fit:cover;background:#f4f4f4}
+		.card input[type=file]{margin-top:8px}
+		.vote-btn{margin-top:8px;padding:8px 12px;background:#ff6b00;color:#fff;border:none;border-radius:4px;cursor:pointer}
+		.vote-btn:active{transform:translateY(1px)}
+		.chart{margin-top:28px;border-top:1px solid #ddd;padding-top:16px}
+		.bar-wrap{display:flex;align-items:center;margin:8px 0}
+		.bar-label{width:160px}
+		.bar{flex:1;height:22px;background:#eee;border-radius:4px;overflow:hidden;margin-right:8px}
+		.bar > .fill{height:100%;background:#ff6b00;width:0}
+		.percent{width:48px;text-align:right}
+		.winner{margin-top:12px;font-weight:700}
+		.custom-input{width:100%;padding:6px;margin-top:6px}
+	</style>
+</head>
+<body>
+	<h1>Halloween Costume Voting</h1>
+	<p style="text-align:center">Click "Vote" under a costume to add a vote. Replace images using the file pickers.</p>
+
+	<div class="options" id="options">
+		<!-- 6 predefined slots -->
+	</div>
+
+	<div class="card" style="margin-top:12px">
+		<h3>Choose Your Own</h3>
+		<img id="customPreview" src="" alt="Custom option" style="height:140px" />
+		<input id="customFile" type="file" accept="image/*">
+		<input id="customName" class="custom-input" placeholder="Name your costume (e.g. "Pirate")">
+		<button class="vote-btn" id="voteCustom">Vote</button>
+	</div>
+
+	<div class="chart" id="chart">
+		<h2>Current Results</h2>
+		<div id="bars"></div>
+		<div class="winner" id="winner">No votes yet.</div>
+	</div>
+
+	<script>
+		const names = [
+			'Witch', 'Vampire', 'Zombie', 'Ghost', 'Superhero', 'Pirate'
+		];
+		const votes = [0,0,0,0,0,0];
+
+		const optionsEl = document.getElementById('options');
+		function createCard(i){
+			const card = document.createElement('div'); card.className='card';
+			const title = document.createElement('h3'); title.textContent = names[i];
+			const img = document.createElement('img'); img.id = 'img'+i; img.alt = names[i]+' image';
+			const file = document.createElement('input'); file.type='file'; file.accept='image/*';
+			file.addEventListener('change', e=>{
+				const f = e.target.files && e.target.files[0];
+				if(!f) return;
+				img.src = URL.createObjectURL(f);
+			});
+			const btn = document.createElement('button'); btn.className='vote-btn'; btn.textContent='Vote';
+			btn.addEventListener('click', ()=>{ votes[i]++; updateChart(); });
+			card.appendChild(title); card.appendChild(img); card.appendChild(file); card.appendChild(btn);
+			return card;
+		}
+
+		for(let i=0;i<6;i++) optionsEl.appendChild(createCard(i));
+
+		// custom option
+		const customFile = document.getElementById('customFile');
+		const customPreview = document.getElementById('customPreview');
+		const customName = document.getElementById('customName');
+		const voteCustom = document.getElementById('voteCustom');
+		let customVotes = 0;
+		customFile.addEventListener('change', e=>{
+			const f = e.target.files && e.target.files[0]; if(!f) return;
+			customPreview.src = URL.createObjectURL(f);
+		});
+		voteCustom.addEventListener('click', ()=>{ customVotes++; updateChart(); });
+
+		function updateChart(){
+			const bars = document.getElementById('bars'); bars.innerHTML='';
+			const total = votes.reduce((a,b)=>a+b,0) + customVotes;
+			// build an array of entries including custom
+			const entries = names.map((n,i)=>({name:n,votes:votes[i]}));
+			const customNameText = customName.value.trim()||'Custom';
+			entries.push({name:customNameText,votes:customVotes});
+
+			// sort for winner detection
+			const sorted = entries.slice().sort((a,b)=>b.votes-a.votes);
+			const winnerText = (total===0)?'No votes yet.' : (sorted[0].votes===0? 'No votes yet.' : `Leading: ${sorted[0].name} (${sorted[0].votes} vote${sorted[0].votes!==1?'s':''})`);
+			document.getElementById('winner').textContent = winnerText;
+
+			entries.forEach(entry=>{
+				const wrap = document.createElement('div'); wrap.className='bar-wrap';
+				const label = document.createElement('div'); label.className='bar-label'; label.textContent = entry.name;
+				const bar = document.createElement('div'); bar.className='bar';
+				const fill = document.createElement('div'); fill.className='fill';
+				const pct = total===0?0:Math.round((entry.votes/total)*100);
+				fill.style.width = pct+'%';
+				bar.appendChild(fill);
+				const percent = document.createElement('div'); percent.className='percent'; percent.textContent = entry.votes + ' ('+pct+'%)';
+				wrap.appendChild(label); wrap.appendChild(bar); wrap.appendChild(percent);
+				bars.appendChild(wrap);
+			});
+		}
+
+		// initial chart
+		updateChart();
+	</script>
+</body>
+</html>

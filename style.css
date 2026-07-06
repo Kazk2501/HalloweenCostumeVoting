@@ -474,6 +474,31 @@ p {
 .gallery-image {
   width: 100%;
   aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+  border-radius: 14px;
+  margin-bottom: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(140, 255, 251, 0.15);
+}
+
+.gallery-image.placeholder {
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.gallery-label {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.gallery-image {
+  width: 100%;
+  aspect-ratio: 4 / 5;
   border-radius: 14px;
   display: flex;
   align-items: center;
